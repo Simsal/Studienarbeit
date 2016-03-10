@@ -93,15 +93,20 @@ public class ZustandsSteuerung {
 				}
 			}
 			if (zustandDesEinparkens == 3) {
-				parkeEin();
+				float[] seitenAbstandNachRechtsMesswerte =
+						new float[seitenAbstandNachRechts.sampleSize()];
+				seitenAbstandNachRechts.fetchSample(seitenAbstandNachRechtsMesswerte, 0);
+				
+				parkeEin(seitenAbstandNachRechtsMesswerte[0]);
 
 			}
 		}
 	}
 
-	private static void parkeEin() {
+	private static void parkeEin(float seitenAbstand) {
 
 		motorAntrieb.flt();
+		// hier Beberechnungen anhand des Abstands anpassen!
 		motorAntrieb.rotate(-450);
 		motorLenkung.rotate(100);
 		motorAntrieb.rotate(650);
