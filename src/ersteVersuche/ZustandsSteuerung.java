@@ -20,7 +20,7 @@ public class ZustandsSteuerung {
 	// ultraschallSensorHinten.getDistanceMode();
 
 	public static EV3TouchSensor touchSensorOben = new EV3TouchSensor(SensorPort.S3);
-	public static SampleProvider einparkVorgangAuslöser = touchSensorOben.getTouchMode();
+	public static SampleProvider einparkVorgangAusloeser = touchSensorOben.getTouchMode();
 
 	public static RegulatedMotor motorLenkung = new EV3MediumRegulatedMotor(MotorPort.A);
 	public static RegulatedMotor motorAntrieb = new EV3LargeRegulatedMotor(MotorPort.B);
@@ -28,7 +28,7 @@ public class ZustandsSteuerung {
 	static float parklueckenBeginn = 0;
 	static float parklueckenEnde = 0;
 
-	static float[] touchSensorObenMesswerte = new float[einparkVorgangAuslöser.sampleSize()];
+	static float[] touchSensorObenMesswerte = new float[einparkVorgangAusloeser.sampleSize()];
 	static float[] seitenAbstandNachRechtsMesswerte = new float[seitenAbstandNachRechts.sampleSize()];
 	
 	static float abstandNachRechtsZuBeginnDesEinparkens = 0;
@@ -36,7 +36,7 @@ public class ZustandsSteuerung {
 	public static void main(String[] args) {
 
 		while (Button.ESCAPE.isUp()) {
-			fahreVorwärtsUndWarteAufEinparksignal();
+			fahreVorwaertsUndWarteAufEinparksignal();
 			if(zustandDesEinparkens != -1){
 				parkeEin(abstandNachRechtsZuBeginnDesEinparkens);
 			}
@@ -67,12 +67,12 @@ public class ZustandsSteuerung {
 		parklueckenBeginn = a;
 	}
 
-	private static void fahreVorwärtsUndWarteAufEinparksignal() {
+	private static void fahreVorwaertsUndWarteAufEinparksignal() {
 		motorAntrieb.setAcceleration(150);
 		motorAntrieb.setSpeed(200);
 		motorAntrieb.backward();
 
-		einparkVorgangAuslöser.fetchSample(touchSensorObenMesswerte, 0);
+		einparkVorgangAusloeser.fetchSample(touchSensorObenMesswerte, 0);
 		if (touchSensorObenMesswerte[0] == 1 && zustandDesEinparkens == -1) {
 			wechselZustand(0, -motorAntrieb.getTachoCount());
 			Button.LEDPattern(5);
