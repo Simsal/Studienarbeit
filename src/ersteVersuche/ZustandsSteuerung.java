@@ -31,7 +31,13 @@ public class ZustandsSteuerung {
 	static float[] touchSensorObenMesswerte = new float[einparkVorgangAusloeser.sampleSize()];
 	static float[] seitenAbstandNachRechtsMesswerte = new float[seitenAbstandNachRechts.sampleSize()];
 	
-	static float abstandNachRechtsZuBeginnDesEinparkens = 0;
+	static float abstandNachRechtsZuBeginnDesEinparkens = 0;	
+	static double breiteDesAutos = 0.195;
+	
+	static double streckeBiszurHaelfteInDerParkluecke;
+	static double laengeDesAutos = 0.225;
+	
+	static double streckeProReifenUmdrehung = 0.1728;
 
 	public static void main(String[] args) {
 
@@ -39,22 +45,25 @@ public class ZustandsSteuerung {
 			fahreVorwaertsUndWarteAufEinparksignal();
 			if(zustandDesEinparkens != -1){
 				motorAntrieb.flt();
-				parkeEin(abstandNachRechtsZuBeginnDesEinparkens);
+				parkeEin();
 			}
 		}
 	}
 
-	private static void parkeEin(float seitenAbstand) {
+	private static void parkeEin() {
 
+		berechneEinparkLaenge();
+		System.out.println("in einparken");
 		motorAntrieb.setSpeed(100);
 		motorAntrieb.setAcceleration(150);
 		// hier Beberechnungen anhand des Abstands anpassen!
+		int gradFuerMotor = (int) (streckeBiszurHaelfteInDerParkluecke/streckeProReifenUmdrehung)*360;
 		motorAntrieb.rotate(-450);
 		motorLenkung.rotate(100);
-		motorAntrieb.rotate(650);
+		motorAntrieb.rotate(gradFuerMotor);
 
 		motorLenkung.rotate(-200);
-		motorAntrieb.rotate(580);
+		motorAntrieb.rotate(gradFuerMotor);
 
 		motorLenkung.rotate(100);
 
@@ -79,6 +88,11 @@ public class ZustandsSteuerung {
 			sucheParkluecke();
 		}
 	}
+	
+	private static void berechneEinparkLaenge (){
+		
+		streckeBiszurHaelfteInDerParkluecke = (Math.asin(((breiteDesAutos+abstandNachRechtsZuBeginnDesEinparkens)/2)*(Math.cos(45)/laengeDesAutos) - 1) + (Math.PI/2))*laengeDesAutos/Math.cos(45);
+	}
 
 	private static void sucheParkluecke() {
 		while (zustandDesEinparkens != 3) {
@@ -89,11 +103,9 @@ public class ZustandsSteuerung {
 
 				if (seitenAbstandNachRechtsMesswerte[0] < 0.15 && seitenAbstandNachRechtsMesswerte[0] != Float.NaN) {
 					wechselZustand(1, -motorAntrieb.getTachoCount());
-					System.out.println(zustandDesEinparkens);
 				}
 				if (seitenAbstandNachRechtsMesswerte[0] > 0.15 | seitenAbstandNachRechtsMesswerte[0] == Float.NaN) {
 					wechselZustand(2, -motorAntrieb.getTachoCount());
-					System.out.println(zustandDesEinparkens);
 
 				}
 
@@ -103,8 +115,6 @@ public class ZustandsSteuerung {
 
 				if (seitenAbstandNachRechtsMesswerte[0] > 0.15 | seitenAbstandNachRechtsMesswerte[0] == Float.NaN) {
 					wechselZustand(2, -motorAntrieb.getTachoCount());
-					System.out.println(zustandDesEinparkens);
-					System.out.println(motorAntrieb.getTachoCount());
 
 				}
 			}
@@ -113,14 +123,11 @@ public class ZustandsSteuerung {
 
 				if (seitenAbstandNachRechtsMesswerte[0] < 0.15 && seitenAbstandNachRechtsMesswerte[0] != Float.NaN) {
 					parklueckenEnde = -motorAntrieb.getTachoCount();
-					System.out.println(motorAntrieb.getTachoCount());
 
 					if ((parklueckenEnde - parklueckenBeginn) > 540) {
 						wechselZustand(3, -motorAntrieb.getTachoCount());
-						System.out.println(zustandDesEinparkens);
 					} else {
 						wechselZustand(1, -motorAntrieb.getTachoCount());
-						System.out.println(zustandDesEinparkens);
 					}
 				}
 			}
