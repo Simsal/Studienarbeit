@@ -38,6 +38,7 @@ public class ZustandsSteuerung {
 		while (Button.ESCAPE.isUp()) {
 			fahreVorwaertsUndWarteAufEinparksignal();
 			if(zustandDesEinparkens != -1){
+				motorAntrieb.flt();
 				parkeEin(abstandNachRechtsZuBeginnDesEinparkens);
 			}
 		}
@@ -45,7 +46,6 @@ public class ZustandsSteuerung {
 
 	private static void parkeEin(float seitenAbstand) {
 
-		motorAntrieb.flt();
 		motorAntrieb.setSpeed(100);
 		motorAntrieb.setAcceleration(150);
 		// hier Beberechnungen anhand des Abstands anpassen!
