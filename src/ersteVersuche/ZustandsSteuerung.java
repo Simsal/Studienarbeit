@@ -59,13 +59,13 @@ public class ZustandsSteuerung {
 		// hier Beberechnungen anhand des Abstands anpassen!
 		int gradFuerMotor = (int) (streckeBiszurHaelfteInDerParkluecke/streckeProReifenUmdrehung)*360;
 		motorAntrieb.rotate(-450);
-		motorLenkung.rotate(100);
+		motorLenkung.rotate(130);
 		motorAntrieb.rotate(gradFuerMotor);
 
-		motorLenkung.rotate(-200);
+		motorLenkung.rotate(-260);
 		motorAntrieb.rotate(gradFuerMotor);
 
-		motorLenkung.rotate(100);
+		motorLenkung.rotate(130);
 
 		System.exit(0);
 	}

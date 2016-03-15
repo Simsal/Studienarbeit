@@ -25,14 +25,18 @@ public class Tests {
 
 		
 		while (Button.ESCAPE.isUp()) {
+			motorLenkung.rotate(130);
+
+			motorLenkung.rotate(-200);
+
+			motorLenkung.rotate(100);
+			
+			
 
 //			if(Button.DOWN.isDown()){
 //				parkeEin();
 //			}
 			//68, 66,5
-			motorLenkung.rotate(-90);
-			motorAntrieb.rotate(-2500);
-			System.exit(0);
 ////
 //			float[] sample = new float[distanceMode.sampleSize()];
 //			distanceMode.fetchSample(sample, 0);
