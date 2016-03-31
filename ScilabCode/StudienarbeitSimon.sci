@@ -37,8 +37,8 @@ function xdot=f(t,x,x_d,zeitdiskret)
             
         else
             
-            realteil2 = v_0/omega*cos(-omega*t(k)+%pi) + 2*realteil1AmWendepunkt; // +0.59
-            imaginaerteil2 =  v_0/omega + v_0/omega*sin(-omega*t(k)+%pi) - 2*(v_0/omega - imaginaerteil1AmWendepunkt) ; // -0.62
+            realteil2 = v_0/omega*cos(-omega*t(k)+%pi) + 2*realteil1AmWendepunkt; 
+            imaginaerteil2 =  v_0/omega + v_0/omega*sin(-omega*t(k)+%pi) - 2*(v_0/omega - imaginaerteil1AmWendepunkt) ; 
             xdot(1) = realteil2;
             xdot(2) = imaginaerteil2;
             
