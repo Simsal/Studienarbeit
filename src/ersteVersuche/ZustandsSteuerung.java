@@ -17,16 +17,16 @@ public class ZustandsSteuerung {
 	// Sensoren
 	public static EV3UltrasonicSensor ultraschallSensorVorne = new EV3UltrasonicSensor(
 			SensorPort.S1);
-	// public static EV3UltrasonicSensor ultraschallSensorHinten = new
-	// EV3UltrasonicSensor(SensorPort.S2);
+	public static EV3UltrasonicSensor ultraschallSensorHinten = new EV3UltrasonicSensor(
+			SensorPort.S2);
 	public static EV3TouchSensor touchSensorOben = new EV3TouchSensor(
 			SensorPort.S3);
 
 	// Messwertaufnahme der Sensoren
 	public static SampleProvider seitenAbstandNachRechts = ultraschallSensorVorne
 			.getDistanceMode();
-	// public static SampleProvider abstandNachHinten =
-	// ultraschallSensorHinten.getDistanceMode();
+	public static SampleProvider abstandNachHinten = ultraschallSensorHinten
+			.getDistanceMode();
 	public static SampleProvider einparkVorgangAusloeser = touchSensorOben
 			.getTouchMode();
 	static float[] touchSensorObenMesswerte = new float[einparkVorgangAusloeser
@@ -51,6 +51,7 @@ public class ZustandsSteuerung {
 	static final double breiteDesAutos = 0.195;
 	static final double laengeDesAutos = 0.225;
 	static final double streckeProReifenUmdrehung = 0.1728;
+	static final double abstandSensorRechtsZumReifenRechts = 0.04;
 
 	public static void main(String[] args) {
 
@@ -66,12 +67,12 @@ public class ZustandsSteuerung {
 	private static void parkeEin() {
 
 		berechneEinparkLaenge();
-		
+
 		motorAntrieb.setSpeed(100);
 		motorAntrieb.setAcceleration(150);
 
-		int gradFuerMotor = (int) (streckeBiszurHaelfteInDerParkluecke / streckeProReifenUmdrehung) * 360;
-		
+		int gradFuerMotor = (int) ((streckeBiszurHaelfteInDerParkluecke / streckeProReifenUmdrehung) * 360);
+
 		motorAntrieb.rotate(-450);
 		motorLenkung.rotate(130);
 		motorAntrieb.rotate(gradFuerMotor);
@@ -80,10 +81,10 @@ public class ZustandsSteuerung {
 		motorAntrieb.rotate(gradFuerMotor);
 
 		motorLenkung.rotate(130);
-		
+
 		Button.LEDPattern(4);
 		Sound.twoBeeps();
-		
+
 		Delay.msDelay(2000);
 
 		System.exit(0);
@@ -111,7 +112,8 @@ public class ZustandsSteuerung {
 
 	private static void berechneEinparkLaenge() {
 
-		streckeBiszurHaelfteInDerParkluecke = (Math.asin(((breiteDesAutos + abstandNachRechtsZuBeginnDesEinparkens) / 2)
+		streckeBiszurHaelfteInDerParkluecke = (Math
+				.asin(((breiteDesAutos + abstandNachRechtsZuBeginnDesEinparkens - abstandSensorRechtsZumReifenRechts) / 2)
 						* (Math.cos(Math.toRadians(45)) / laengeDesAutos) - 1) + (Math.PI / 2))
 				* laengeDesAutos / Math.cos(Math.toRadians(45));
 	}
