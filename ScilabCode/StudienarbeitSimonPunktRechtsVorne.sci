@@ -6,10 +6,10 @@ n = 1; //[Umdrehungen/s]
 r_Reifen = 0.0275; //[m]
 v_0 = n*2*r_Reifen*%pi; //[m/s] Fahrtgeschwindigkeit
 
-alpha = 45; //[°] Winkel zwischen eingelenktem Reifen und Parallele zum Auto, ergo "Lenkwinkel"
+alpha = 58; //[°] Winkel zwischen eingelenktem Reifen und Parallele zum Auto, ergo "Lenkwinkel"
 
 l = 0.225; //[m] Länge des Autos
-omega = v_0*cos(alpha)/l; //[1/s] Winkelgeschwindigkeit für die Kreisbewegung des Autos
+omega = v_0*cosd(alpha)/l; //[1/s] Winkelgeschwindigkeit für die Kreisbewegung des Autos
 
 b = 0.195; //[m] Breite des Autos
 A = 0.06; //[m] Abstand zum nächsten Auto
