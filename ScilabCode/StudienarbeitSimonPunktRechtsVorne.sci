@@ -6,7 +6,7 @@ n = 1; //[Umdrehungen/s]
 r_Reifen = 0.0275; //[m]
 v_0 = n*2*r_Reifen*%pi; //[m/s] Fahrtgeschwindigkeit
 
-alpha = 58; //[°] Winkel zwischen eingelenktem Reifen und Parallele zum Auto, ergo "Lenkwinkel"
+alpha = 60; //[°] Winkel zwischen eingelenktem Reifen und Parallele zum Auto, ergo "Lenkwinkel"
 
 l = 0.225; //[m] Länge des Autos
 omega = v_0*cosd(alpha)/l; //[1/s] Winkelgeschwindigkeit für die Kreisbewegung des Autos
@@ -34,12 +34,11 @@ function xdot=f(t,x,x_d,zeitdiskret)
             imaginaerteil1 =  v_0/omega + v_0/omega*sin(omega*t(k)-%pi/2);
             xdot(1) = realteil1;
             xdot(2) = imaginaerteil1;
-           
+                       
             realteil1AmWendepunkt = realteil1;
-            imaginaerteil1AmWendepunkt = imaginaerteil1;
-            
+            imaginaerteil1AmWendepunkt = imaginaerteil1;  
+                      
             m = sin(omega * t(k)) / cos(omega * t(k));
-            
             delta_y = d * sin(m - phi);
             delta_x = d * cos(m - phi); 
             
@@ -55,10 +54,9 @@ function xdot=f(t,x,x_d,zeitdiskret)
             xdot(2) = imaginaerteil2;
             
             m = (sin(-omega*t(k)+(3*%pi/2)) / cos(-omega*t(k)+(3*%pi/2)));
-            
             delta_y = d * sin(m - phi);
-            delta_x = d * cos(m - phi);
-            
+            delta_x = d * cos(m - phi);         
+               
             xdot(3) = realteil2 - delta_x;
             xdot(4) = imaginaerteil2 - delta_y;
             xdot(5) = m;
@@ -78,6 +76,5 @@ figure(0);
 clf();
 xgrid(1);
 plot2d(x(2,:),x(3,:));
-plot(0.1,0.1575,'o');
+plot(0.15,0.1575,'o');
 plot2d(x(4,:),x(5,:));
-//plot2d(t,x(6,:),2);
