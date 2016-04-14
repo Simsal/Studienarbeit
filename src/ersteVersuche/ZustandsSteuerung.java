@@ -51,7 +51,7 @@ public class ZustandsSteuerung {
 	static final double breiteDesAutos = 0.195;
 	static final double laengeDesAutos = 0.225;
 	static final double streckeProReifenUmdrehung = 0.1728;
-	static final double abstandSensorRechtsZumReifenRechts = 0.04;
+	static final double abstandSensorRechtsZumReifenRechts = 0; //0.04;
 
 	public static void main(String[] args) {
 
@@ -73,7 +73,7 @@ public class ZustandsSteuerung {
 
 		int gradFuerMotor = (int) ((streckeBiszurHaelfteInDerParkluecke / streckeProReifenUmdrehung) * 360);
 
-		motorAntrieb.rotate(-450);
+		motorAntrieb.rotate(-400);
 		motorLenkung.rotate(130);
 		motorAntrieb.rotate(gradFuerMotor);
 
@@ -93,7 +93,9 @@ public class ZustandsSteuerung {
 	private static void wechselZustand(int zustand, float a) {
 
 		zustandDesEinparkens = zustand;
-		parklueckenBeginn = a;
+		if(zustand != 3){
+			parklueckenBeginn = a;
+		}
 	}
 
 	private static void fahreVorwaertsUndWarteAufEinparksignal() {
@@ -155,7 +157,7 @@ public class ZustandsSteuerung {
 						&& seitenAbstandNachRechtsMesswerte[0] != Float.NaN) {
 					parklueckenEnde = -motorAntrieb.getTachoCount();
 
-					if ((parklueckenEnde - parklueckenBeginn) > 540) {
+					if ((parklueckenEnde - parklueckenBeginn) > 940) {
 						wechselZustand(3, -motorAntrieb.getTachoCount());
 					} else {
 						wechselZustand(1, -motorAntrieb.getTachoCount());
