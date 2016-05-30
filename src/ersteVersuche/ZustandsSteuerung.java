@@ -47,11 +47,13 @@ public class ZustandsSteuerung {
 	static float abstandNachRechtsZuBeginnDesEinparkens = 0;
 	static double streckeBiszurHaelfteInDerParkluecke;
 
-	// Autokonstanten
+	// Autokonstanten; Müssen für anderes Auto angepasst werden, dafür auch Werte aus Scilab Simulation einsetzen.
 	static final double breiteDesAutos = 0.195;
 	static final double laengeDesAutos = 0.225;
 	static final double streckeProReifenUmdrehung = 0.1728;
-	static final double abstandSensorRechtsZumReifenRechts = 0; //0.04;
+	static final double abstandSensorRechtsZumReifenRechts = 0; 
+	static final int mindestGroeßeDerParkluecke = 940;
+	static final int streckeZumVorfahrenNebenDasVordereAuto = 400;
 
 	public static void main(String[] args) {
 
@@ -73,7 +75,7 @@ public class ZustandsSteuerung {
 
 		int gradFuerMotor = (int) ((streckeBiszurHaelfteInDerParkluecke / streckeProReifenUmdrehung) * 360);
 
-		motorAntrieb.rotate(-400);
+		motorAntrieb.rotate(-streckeZumVorfahrenNebenDasVordereAuto);
 		motorLenkung.rotate(130);
 		motorAntrieb.rotate(gradFuerMotor);
 
@@ -157,7 +159,7 @@ public class ZustandsSteuerung {
 						&& seitenAbstandNachRechtsMesswerte[0] != Float.NaN) {
 					parklueckenEnde = -motorAntrieb.getTachoCount();
 
-					if ((parklueckenEnde - parklueckenBeginn) > 940) {
+					if ((parklueckenEnde - parklueckenBeginn) > mindestGroeßeDerParkluecke) { 
 						wechselZustand(3, -motorAntrieb.getTachoCount());
 					} else {
 						wechselZustand(1, -motorAntrieb.getTachoCount());
